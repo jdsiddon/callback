@@ -7,24 +7,32 @@ This simple script accepts an array of website names and them formats them with 
 
 var urlArray = ['google', 'yahoo', 'ebay'];										
 
-var userNotify = function(data, callback) {  // 2. data = urlArray and callback = "makeUrl". 
-	for (var i = 0; i < data.length; i++) {											
-		console.log("Modifying string \"" + data[i] + "\" to correct format...");	
+
+
+
+var userNotify = function(data, callback) {  // 2. data = urlArray and callback = our anonymous function defined on line 27. 
+	var
+		err
+	;
+	
+	if (err) {
+		callback(err);
 	}
-
-	callback(data, printArray);	// 3. After loop completes, the callback is executed (in this case data is sent to function makeUrl with the the printArray callback).																																					
-
+	
+	else {
+		for (var i = 0; i < data.length; i++) {	 // 3. Function that modifys each urlArray element.										
+			console.log("Modifying string \"" + data[i] + "\" to correct format...");
+			data[i] = "www." + data[i] + ".com";
+		}
+		callback(err, data);	// 4. After loop completes, the callback is executed (the anonymous function defined on line 21).
+	}
 };
 
-var makeUrl = function(data, callback) {  // 4.  makeUrl gets data and callback (callback = printArray).										
-	for (var i = 0; i < data.length; i++) {											
-		data[i] = "www." + data[i] + ".com";
+userNotify(urlArray, function(err, data) {    // 1. We start our script by sending "urlArray" and a callback to "userNotify."  
+	if (err) {	// 5. If an error exists we will console.log it to screen. err was sent to this function on line 18.
+		console.log(err);
 	}
-	callback(data);	// 5. The callback printArray is executed with the modified data array.
-}; 																				
-										
-var printArray = function(data) {  // 6. Array is printed out
-	console.log(data);
-};
-
-userNotify(urlArray, makeUrl);  // 1. We start our script by sending "urlArray" and "makeUrl" to function "userNotify."  
+	else {     // 6.  No error exists we will console.log data.  data was sent to this function on line 18.
+		console.log(data);
+	}
+}); 
